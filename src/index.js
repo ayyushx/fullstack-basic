@@ -1,31 +1,85 @@
-const express = require('express');
+// ---------------------------
+// Load Environment Variables
+// ---------------------------
 const dotenv = require('dotenv');
+dotenv.config(); // Loads variables from .env into process.env
 
-// Load environment variables from .env file
-dotenv.config();
+// -------------------
+// Import Dependencies
+// -------------------
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan'); // For logging HTTP requests
+const helmet = require('helmet'); // For securing HTTP headers
 
-// Initialize express app
+// ----------------
+// Initialize App
+// ----------------
 const app = express();
 
-// Middleware to parse JSON
+// ------------------------------
+// Connect to Database (Optional)
+// ------------------------------
+const connectDB = require('./config/db');
+connectDB(); // Ensure you have a db.js in config folder
+
+// ------------------------------
+// Middleware Setup
+// ------------------------------
+
+// Enable CORS for all routes
+app.use(cors());
+
+// HTTP request logger
+app.use(morgan('dev'));
+
+// Secure HTTP headers
+app.use(helmet());
+
+// Parse incoming JSON requests
 app.use(express.json());
 
-// Sample route
+// Parse URL-encoded data (for form submissions)
+app.use(express.urlencoded({ extended: true }));
+
+// ------------------------------
+// Route Handlers
+// ------------------------------
 app.get('/', (req, res) => {
-    res.send('Welcome to the backend API!');
+    res.status(200).send({
+        message: 'Welcome to the Backend API 🎉',
+        status: 'OK',
+    });
 });
 
-// Example API route group
+// Mount modular route files
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/products', require('./routes/productRoutes')); // Example of another route group
 
-// Global error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+// ------------------------------
+// Error Handling Middleware
+// ------------------------------
+
+// 404 Not Found handler
+app.use((req, res, next) => {
+    res.status(404).json({
+        error: 'Route not found',
+    });
 });
 
-// Server listening
+// General Error handler
+app.use((err, req, res, next) => {
+    console.error('Error:', err.stack);
+    res.status(500).json({
+        error: 'Internal Server Error',
+    });
+});
+
+// ------------------------------
+// Start Server
+// ------------------------------
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✅ Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
