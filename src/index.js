@@ -2,7 +2,7 @@ import express from "express"
 import connectDB from "./db/index.js"
 import dotenv from "dotenv"
 
-dotenv.config({path : "./env"});
+dotenv.config(); // configuring the path is not necessary as it is pointng root directory itself
 const app = express()
 
 connectDB()
