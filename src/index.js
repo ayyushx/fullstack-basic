@@ -5,7 +5,15 @@ import dotenv from "dotenv"
 dotenv.config(); // configuring the path is not necessary as it is pointng root directory itself
 const app = express()
 
-connectDB()
+connectDB()  // Then and catch are used to respond to the promises after async await
+.then(() =>{   
+    app.listen(process.env.PORT || 8000,  () => {
+        console.log(`Server is running at ${process.env.PORT}`);
+    });
+})
+.catch( (error) => {
+    console.log("MogoDB connection failed",error);
+})
 
 
 
