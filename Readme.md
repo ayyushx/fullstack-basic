@@ -47,7 +47,8 @@ You need to have Node.js and npm installed on your machine.
 
 1.  **Clone the repository**
     ```sh
-    git clone [https://github.com/ayyushx/fullstack-basic.git](https://github.com/ayyushx/fullstack-basic.git)
+    git clone [https://github.com/ayyushx/fullstack-basic.git]()
+
     ```
 2.  **Navigate to the project directory**
     ```sh
@@ -135,6 +136,6 @@ Distributed under the MIT License.
 
 ## 📧 Contact
 
-Your Name - [LinkedIn](https://www.linkedin.com/in/ayyushx/)
+Ayush Badoni - [LinkedIn](https://www.linkedin.com/in/ayyushx/)
 
 Project Link: [https://github.com/ayyushx/fullstack-basic](https://github.com/ayyushx/fullstack-basic)
