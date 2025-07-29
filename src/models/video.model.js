@@ -1,16 +1,44 @@
 import mongoose from "mongoose"
 
-const videoSchema = new mongoose.Schema(
+const videoSchema = new Schema(
     {
-        videoname : {
-            type : String,
-            required : [true, "This field is required"]
+        videoFile: {
+            type: String, //cloudinary url
+            required: true
         },
-        likecount : {
-            type : int
+        thumbnail: {
+            type: String, //cloudinary url
+            required: true
         },
+        title: {
+            type: String, 
+            required: true
+        },
+        description: {
+            type: String, 
+            required: true
+        },
+        duration: {
+            type: Number, 
+            required: true
+        },
+        views: {
+            type: Number,
+            default: 0
+        },
+        isPublished: {
+            type: Boolean,
+            default: true
+        },
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }
 
+    }, 
+    {
+        timestamps: true
     }
-);
+)
 
 export const Videos = new mongoose.model("Videos" , videoSchema );
