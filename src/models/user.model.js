@@ -52,42 +52,44 @@ const userSchema = new Schema(
     }
 )
 
-userSchema.pre("save", async function (next) {
-    if(!this.isModified("password")) return next();
-
-    this.password = await bcrypt.hash(this.password, 10)
-    next()
+// Async function because we will be using bcrypt to hash the password
+// Now we will add middleware to perform an action just before saving the document
+userSchema.pre("save", async function(next) { // next to tell that , execute next middleware (save is a middleware)
+    if( this.isModified("password") ) return next(); // if the password is not modified, then we don't need to hash it again, so we call next() to skip hashing
+    this.password = await bcrypt.hash(this.password, 10) // hashing the password before saving it( done using bcrypt)
+    next();
 })
 
-userSchema.methods.isPasswordCorrect = async function(password){
-    return await bcrypt.compare(password, this.password)
+// Gives whether password is correct or not
+userSchema.methods.isPasswordCorrect = async function( password ){
+    return await bcrypt.compare( password, this.password )
 }
 
+// JWT is like, whosoever is having the token that user is authenticated and given the data
 userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
-        {
-            _id: this._id,
-            email: this.email,
-            username: this.username,
-            fullName: this.fullName
+        { // These are the payload data that will be encoded in the token when the user logs in and asks for an access token
+            _id : this._id, // this._id refers to the user id
+            email : this.email,
+            username : this.username,
+            fullName : this.fullName
         },
-        process.env.ACCESS_TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_SECRET, // This is the secret key that will be used to sign the token
         {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY
-        }
-    )
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY // This is the expiration time of the token, after which the token will be invalid
+        }  
+    ) // This method will generate an access token for the user
 }
-userSchema.methods.generateRefreshToken = function(){
+userSchema.methods.generateRefreshToken = function(){ // These are frequently refreshed therefore we have less number of values in them
     return jwt.sign(
-        {
-            _id: this._id,
-            
+        { // These are the payload data that will be encoded in the token when the user logs in and asks for an access token
+            _id : this._id // this._id refers to the user id
         },
-        process.env.REFRESH_TOKEN_SECRET,
+        process.env.REFRESH_TOKEN_SECRET, // This is the secret key that will be used to sign the token
         {
-            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
-        }
-    )
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY // This is the expiration time of the token, after which the token will be invalid
+        }  
+    ) // This method will generate an access token for the user
 }
 
 export const User = mongoose.model("User", userSchema)
