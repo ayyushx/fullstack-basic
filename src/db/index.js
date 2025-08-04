@@ -4,7 +4,7 @@ import express from "express"
 const connectDB = async () => {
     try{
         const mongoInstance = await mongoose.connect(process.env.MONGODB_URI); // await should be used 
-        console.log(`Connection created : " ${mongoInstance}`)
+        console.log(`Connection created with MongoDB : ${mongoInstance} `); // This will give the host name of the MongoDB instance
 
     }catch( error ){
         console.log("error", error);

@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser"
 // Middleware is like, when we are sending some request and handling it with a respose , we can implement
 // a check between them like for example, whether the user is logged in or not? 
 // (err,req,res,next) :-> next is used to point to the next middleware 
+
+const app = express()
+
 app.use(cors({
     origin : process.env.CORS_ORIGIN,
     credentials : true
@@ -24,7 +27,17 @@ app.use(express.static("public")); // Used to store static files, i.e., pdf,favi
 
 app.use(cookieParser()); // Options inside it is not required
 
-const app = express()
+// routes import
+
+import userRouter from "./routes/user.routes.js";
+
+
+// routes declaration
+// http://localhost:3000/api/v1/users
+app.use("/api/v1/users", userRouter ) // This will handle all the user related routes, i.e., /users/register, /users/login etc
+
+
+
 
 
 export { app } // exported the required app

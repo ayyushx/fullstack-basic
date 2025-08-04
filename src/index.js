@@ -1,9 +1,10 @@
-import express from "express"
+// import express from "express"
 import connectDB from "./db/index.js"
 import dotenv from "dotenv"
+import {app} from "./app.js" // Importing the app from app.js file
 
 dotenv.config(); // configuring the path is not necessary as it is pointng root directory itself
-const app = express()
+// const app = express()
 
 connectDB()  // Then and catch are used to respond to the promises after async await
 .then(() =>{   
