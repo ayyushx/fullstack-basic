@@ -11,7 +11,7 @@ const app = express()
 
 app.use(cors({
     origin : process.env.CORS_ORIGIN,
-    credentials : true
+    credentials : true // This is used to allow cookies to be sent in cross-origin requests
 })); // Cors use for cross origination connection
 
 app.use(express.json({ // We are configuring to get a total of 16kb data(getting this much data)

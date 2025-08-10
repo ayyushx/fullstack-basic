@@ -1,7 +1,7 @@
 // import express from "express"
 import connectDB from "./db/index.js"
 import dotenv from "dotenv"
-import {app} from "./app.js" // Importing the app from app.js file
+import {app} from "./app.js" // Importing the app from app.js file( and not creating of it's own instance)
 
 dotenv.config(); // configuring the path is not necessary as it is pointng root directory itself
 // const app = express()
